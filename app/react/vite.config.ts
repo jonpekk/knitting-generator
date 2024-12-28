@@ -7,7 +7,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [TanStackRouterVite({}), react()],
-  base: '/app/', // Important: Set the correct base path
+  base: '/', // Important: Set the correct base path
   build: {
     outDir: path.resolve(__dirname, 'dist'), // Output to app/react/dist
     emptyOutDir: true,
