@@ -1,4 +1,5 @@
 import { TGridCell } from "@/types/gridCell"
+import { ComponentProps } from "react"
 
 type GridCellProps = {
   cellSize: number,
@@ -6,14 +7,15 @@ type GridCellProps = {
   active: boolean,
   setGridCells: (grid: TGridCell[]) => void,
   gridCells: TGridCell[]
-}
+} & ComponentProps<'div'>
 
 function GridCell({
   cellSize,
   position,
   active,
   setGridCells,
-  gridCells
+  gridCells,
+  ...props
 }: GridCellProps) {
 
   return (
@@ -21,15 +23,10 @@ function GridCell({
       style={{
         width: cellSize,
         height: cellSize,
-        background: active ? 'red' : 'white',
+        background: active ? 'black' : 'white',
         border: '1px solid lightgray', // Keep the outer border
       }}
-      onClick={() => {
-        const newGrid = [...gridCells]
-        newGrid[position].active = !newGrid[position].active
-
-        setGridCells(newGrid)
-      }}
+      {...props}
     >
 
     </div>
