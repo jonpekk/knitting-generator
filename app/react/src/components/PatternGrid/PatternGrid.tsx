@@ -9,6 +9,7 @@ const cellSize = 20; // Size of each cell in pixels
 function PatternGrid() {
   const [pattern, setPattern] = useState<string[] | null>(null)
   const [gridCells, setGridCells] = useState<TGridCell[]>([])
+  const [canSelect, setCanSelect] = useState(false)
 
   useEffect(() => {
     const cells = [];
@@ -31,13 +32,18 @@ function PatternGrid() {
           justifyContent: 'center',
           alignItems: 'center'
         }}
+        onMouseDown={() => setCanSelect(true)}
+        onMouseUp={() => setCanSelect(false)}
+        onDragStart={(e) => {
+          e.preventDefault()
+        }}
       >
         <div
           style={{
             display: 'inline-grid',
             gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
             gridTemplateRows: `repeat(${gridSize}, 1fr)`,
-            border: '1px solid lightgray', // Keep the outer border
+            border: '1px solid lightgray',
           }}
         >
           {gridCells.map(cell => (
@@ -48,6 +54,20 @@ function PatternGrid() {
               active={cell.active}
               gridCells={gridCells}
               setGridCells={setGridCells}
+              onClick={() => {
+                const newGrid = [...gridCells]
+                newGrid[cell.position].active = !newGrid[cell.position].active
+
+                setGridCells(newGrid)
+              }}
+              onMouseMoveCapture={() => {
+                if (canSelect) {
+                  const newGrid = [...gridCells]
+                  newGrid[cell.position].active = true // !newGrid[cell.position].active
+
+                  setGridCells(newGrid)
+                }
+              }}
             />
           ))
 
@@ -62,7 +82,7 @@ function PatternGrid() {
       {pattern && (
         <div>
           {pattern.map((row) => (
-            <p>
+            <p key={row}>
               {row}
             </p>
           ))}
