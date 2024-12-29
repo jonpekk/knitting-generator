@@ -1,4 +1,12 @@
-import { useState } from "react"
+import { TGridCell } from "@/types/gridCell"
+
+type GridCellProps = {
+  cellSize: number,
+  position: number,
+  active: boolean,
+  setGridCells: (grid: TGridCell[]) => void,
+  gridCells: TGridCell[]
+}
 
 function GridCell({
   cellSize,
@@ -6,7 +14,7 @@ function GridCell({
   active,
   setGridCells,
   gridCells
-}: any) {
+}: GridCellProps) {
 
   return (
     <div

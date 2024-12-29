@@ -1,13 +1,14 @@
 import { generateGridInstructions } from "@/helpers/generateGridInstructions";
 import { useEffect, useState } from "react";
 import GridCell from "./GridCell";
+import { TGridCell } from "@/types/gridCell";
 
 const gridSize = 50; // Number of rows and columns
 const cellSize = 20; // Size of each cell in pixels
 
 function PatternGrid() {
-  const [pattern, setPattern] = useState<any>(null)
-  const [gridCells, setGridCells] = useState<any[]>([])
+  const [pattern, setPattern] = useState<string[] | null>(null)
+  const [gridCells, setGridCells] = useState<TGridCell[]>([])
 
   useEffect(() => {
     const cells = [];
@@ -22,7 +23,6 @@ function PatternGrid() {
     setGridCells(cells)
 
   }, [])
-
   return (
     <>
       <div
@@ -61,7 +61,7 @@ function PatternGrid() {
       </button>
       {pattern && (
         <div>
-          {pattern.map((row: any) => (
+          {pattern.map((row) => (
             <p>
               {row}
             </p>

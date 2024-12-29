@@ -1,4 +1,6 @@
-export function generateGridInstructions(grid: any, rowLength = 50) {
+import { TGridCell } from "@/types/gridCell";
+
+export function generateGridInstructions(grid: TGridCell[], rowLength = 50) {
   const instructions = [];
   let gridIndex = 0;
   let rowNumber = 1;
@@ -7,7 +9,7 @@ export function generateGridInstructions(grid: any, rowLength = 50) {
     const row = grid.slice(gridIndex, gridIndex + rowLength);
     let currentInstruction = { knitBefore: 0, pearl: 0, knitAfter: 0 };
     let inPearlSection = false;
-    let rowInstructions = []; // Array to store instruction *objects*
+    let rowInstructions = [];
 
     for (let j = 0; j < row.length; j++) {
       if (row[j].active) {
@@ -33,7 +35,7 @@ export function generateGridInstructions(grid: any, rowLength = 50) {
 
     let rowInstructionStrings = rowInstructions.map(({ knitBefore, pearl, knitAfter }) => `${knitBefore} knit, ${pearl} pearl, ${knitAfter} knit`);
 
-    if (rowInstructionStrings.length === 0 && row.every((cell: any) => !cell.active)) {
+    if (rowInstructionStrings.length === 0 && row.every((cell) => !cell.active)) {
       instructions.push(`Row ${rowNumber}: ${rowLength} knit, 0 pearl, 0 knit`);
     } else if (rowInstructionStrings.length === 0) {
       instructions.push(`Row ${rowNumber}: ${rowLength} knit, 0 pearl, 0 knit`); //Handles empty rows
