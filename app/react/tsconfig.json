@@ -1,10 +1,25 @@
-{
-  "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler"
+  {
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@/components/*": [
+          "src/components/*"
+        ],
+        "@/helpers/*": [
+          "src/helpers/*"
+        ],
+        "@/types/*": [
+          "types/*"
+        ],
+        "@/*": [
+          "./*"
+        ]
+      },
+      "strict": true,
+      "esModuleInterop": true,
+      "jsx": "react-jsx",
+      "target": "ESNext",
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+    }
   }
-}
