@@ -1,36 +1,29 @@
-import { TGridCell } from "@/types/gridCell"
-import { ComponentProps } from "react"
+
+import { ComponentProps, forwardRef } from "react"
 
 type GridCellProps = {
-  cellSize: number,
-  position: number,
-  active: boolean,
-  setGridCells: (grid: TGridCell[]) => void,
-  gridCells: TGridCell[]
+  cellSize: number
 } & ComponentProps<'div'>
 
-function GridCell({
+const GridCell = forwardRef<HTMLDivElement, GridCellProps>(({
   cellSize,
-  position,
-  active,
-  setGridCells,
-  gridCells,
   ...props
-}: GridCellProps) {
+}, ref) => {
 
   return (
     <div
       style={{
         width: cellSize,
         height: cellSize,
-        background: active ? 'black' : 'white',
+        background: 'white',
         border: '1px solid lightgray', // Keep the outer border
       }}
+      ref={ref}
       {...props}
     >
 
     </div>
   )
-}
+})
 
 export default GridCell
