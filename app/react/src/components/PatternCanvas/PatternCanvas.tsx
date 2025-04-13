@@ -1,22 +1,27 @@
 import { useRef, useEffect } from "react";
 
+type CanvasCell = {
+  row: number,
+  col: number
+}
+
 export default function GridCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDraggingRef = useRef(false);
-  const filledCells = useRef(new Set());
+  const filledCells = useRef<Set<CanvasCell>>(new Set());
 
-  const cellSize = 40;
-  const rows = 20;
-  const cols = 20;
+  const cellSize = 20;
+  const rows = 50;
+  const cols = 50;
 
-  const getCellKey = (row: number, col: number) => `${row},${col}`;
+  const getCellKey = (row: number, col: number): CanvasCell => ({ row, col });
 
-  const drawGrid = (ctx: any) => {
+  const drawGrid = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, cols * cellSize, rows * cellSize);
 
     // Draw filled cells
-    filledCells.current.forEach((key: any) => {
-      const [row, col] = key.split(",").map(Number);
+    filledCells.current.forEach((key: CanvasCell) => {
+      const { row, col } = key;
       ctx.fillStyle = "lightblue";
       ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
     });
@@ -38,7 +43,7 @@ export default function GridCanvas() {
     }
   };
 
-  const handlePaint = (e: any, ctx: any) => {
+  const handlePaint = (e: MouseEvent, ctx: CanvasRenderingContext2D) => {
     const rect = ctx.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -63,12 +68,12 @@ export default function GridCanvas() {
 
     drawGrid(ctx);
 
-    const handleMouseDown = (e: any) => {
+    const handleMouseDown = (e: MouseEvent) => {
       isDraggingRef.current = true;
       handlePaint(e, ctx);
     };
 
-    const handleMouseMove = (e: any) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (isDraggingRef.current) {
         handlePaint(e, ctx);
       }
