@@ -1,27 +1,24 @@
-import { useRef, useEffect } from "react";
-
-type CanvasCell = {
-  row: number,
-  col: number
-}
+import { generateGridInstructions } from "@/helpers/generateGridInstructions";
+import { useRef, useEffect, useState } from "react";
 
 export default function GridCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDraggingRef = useRef(false);
-  const filledCells = useRef<Set<CanvasCell>>(new Set());
+  const filledCells = useRef<Set<string>>(new Set());
+  const [pattern, setPattern] = useState<string[]>([])
 
-  const cellSize = 20;
+  const cellSize = 10;
   const rows = 50;
   const cols = 50;
 
-  const getCellKey = (row: number, col: number): CanvasCell => ({ row, col });
+  const getCellKey = (row: number, col: number) => `${row},${col}`;
 
   const drawGrid = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, cols * cellSize, rows * cellSize);
 
     // Draw filled cells
-    filledCells.current.forEach((key: CanvasCell) => {
-      const { row, col } = key;
+    filledCells.current.forEach((key: string) => {
+      const [row, col] = key.split(",").map(Number);
       ctx.fillStyle = "lightblue";
       ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
     });
@@ -95,13 +92,23 @@ export default function GridCanvas() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        border: "1px solid black",
-        display: "block",
-        margin: "0 auto",
-      }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        style={{
+          border: "1px solid black",
+          display: "block",
+          margin: "0 auto",
+        }}
+      />
+      <button
+        onClick={() => setPattern(generateGridInstructions(filledCells.current, cols))}
+      >
+        Generate Pattern
+      </button>
+      {pattern.map(line => (
+        <p key={line}>{line}</p>
+      ))}
+    </>
   );
 }
